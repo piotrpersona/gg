@@ -1,8 +1,11 @@
-package users
+package app
 
 import (
 	"context"
-	"fmt"
+	"log"
+	"os"
+
+	"github.com/piotrpersona/gcomv/neo"
 
 	"github.com/google/go-github/github"
 	"golang.org/x/oauth2"
@@ -43,13 +46,20 @@ func getFollowing(ghClient *github.Client, user string) []*github.User {
 }
 
 func App() {
-	ghClient := githubClient()
-	users := []string{"piotrpersona", "mateuszstompor", "reconndev", "filwie"}
-
-	for _, user := range users {
-		followers := getFollowers(ghClient, user)
-		following := getFollowing(ghClient, user)
-		fmt.Println(followers)
-		fmt.Println(following)
+	uri := os.Getenv("NEO_URI")
+	username := os.Getenv("NEO_USER")
+	password := os.Getenv("NEO_PASS")
+	err := neo.HelloWorld(uri, username, password)
+	if err != nil {
+		log.Fatal(err)
 	}
+	// ghClient := githubClient()
+	// users := []string{"piotrpersona", "mateuszstompor", "reconndev", "filwie"}
+
+	// for _, user := range users {
+	// 	followers := getFollowers(ghClient, user)
+	// 	following := getFollowing(ghClient, user)
+	// 	fmt.Println(followers)
+	// 	fmt.Println(following)
+	// }
 }

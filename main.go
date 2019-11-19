@@ -18,5 +18,5 @@ package main
 import "github.com/piotrpersona/gcomv/cmd"
 
 func main() {
-  cmd.Execute()
+	cmd.Execute()
 }
