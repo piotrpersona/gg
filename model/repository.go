@@ -12,6 +12,7 @@ type Repository struct {
 	ID          int64
 	Name        string
 	Description string
+	URL         string
 	Archived    bool
 }
 
@@ -20,6 +21,7 @@ func CreateRepository(ghRepository *github.Repository) Repository {
 		ID:          ghRepository.GetID(),
 		Name:        ghRepository.GetName(),
 		Description: ghRepository.GetDescription(),
+		URL:         ghRepository.GetURL(),
 		Archived:    ghRepository.GetArchived(),
 	}
 }
@@ -31,7 +33,8 @@ func (r Repository) Neo() neo.Query {
 				ID: %d,
 				Name: "%s",
 				Description: "%s",
+				URL: "%s",
 				Archived: %t
-			})`, r.ID, r.Name, r.Description, r.Archived)
+			})`, r.ID, r.Name, r.Description, r.URL, r.Archived)
 	return neo.Query(queryString)
 }
