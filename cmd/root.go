@@ -1,79 +1,58 @@
 package cmd
 
 import (
-	"fmt"
 	"os"
 
-	"github.com/piotrpersona/gcomv/app"
-	"github.com/spf13/cobra"
+	"github.com/piotrpersona/gg/app"
 
-	homedir "github.com/mitchellh/go-homedir"
+	log "github.com/sirupsen/logrus"
+	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
 
-var cfgFile string
+func buildRootCmd() (rootCmd *cobra.Command) {
+	var (
+		limit                                    int
+		uri, username, password, token, loglevel string
+	)
 
-// rootCmd represents the base command when called without any subcommands
-var rootCmd = &cobra.Command{
-	Use:   "gcomv",
-	Short: "A brief description of your application",
-	Long: `A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
+	rootCmd = &cobra.Command{
+		Use:   "gg",
+		Short: "Build Github Graph",
+		Long:  `Fetch repositories from a github and build a graph`,
+		Run: func(cmd *cobra.Command, args []string) {
+			level, err := log.ParseLevel(loglevel)
+			if err != nil {
+				log.Fatal(err)
+				os.Exit(1)
+			}
+			applicationConfig := app.ApplicationConfig{
+				URI:      uri,
+				Username: username,
+				Password: password,
+				Token:    token,
+				Limit:    limit,
+				LogLevel: level,
+			}
+			app.Run(applicationConfig)
+		},
+	}
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
-	Run: func(cmd *cobra.Command, args []string) {
-		app.App()
-	},
+	flags := rootCmd.Flags()
+	flags.IntVarP(&limit, "limit", "l", 1, "Number of repositories to fetch")
+	flags.StringVarP(&uri, "uri", "", viper.GetString("NEO_URI"), "Neo4j compatible URI")
+	flags.StringVarP(&username, "username", "u", viper.GetString("NEO_USER"), "Neo4j connection username")
+	flags.StringVarP(&password, "password", "p", viper.GetString("NEO_PASS"), "Neo4j connection password")
+	flags.StringVarP(&token, "token", "t", viper.GetString("GITHUB_TOKEN"), "GitHub API Token String")
+	flags.StringVarP(&loglevel, "loglevel", "", log.InfoLevel.String(), "Log level")
+
+	return
 }
 
-// Execute adds all child commands to the root command and sets flags appropriately.
-// This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
+	viper.AutomaticEnv()
+	rootCmd := buildRootCmd()
 	if err := rootCmd.Execute(); err != nil {
-		fmt.Println(err)
-		fmt.Println("hehe")
 		os.Exit(1)
-	}
-}
-
-func init() {
-	cobra.OnInitialize(initConfig)
-
-	// Here you will define your flags and configuration settings.
-	// Cobra supports persistent flags, which, if defined here,
-	// will be global for your application.
-
-	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.gcomv.yaml)")
-
-	// Cobra also supports local flags, which will only run
-	// when this action is called directly.
-	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
-}
-
-// initConfig reads in config file and ENV variab les if set.
-func initConfig() {
-	if cfgFile != "" {
-		// Use config file from the flag.
-		viper.SetConfigFile(cfgFile)
-	} else {
-		// Find home directory.
-		home, err := homedir.Dir()
-		if err != nil {
-			fmt.Println(err)
-			os.Exit(1)
-		}
-
-		// Search config in home directory with name ".gcomv" (without extension).
-		viper.AddConfigPath(home)
-		viper.SetConfigName(".gcomv")
-	}
-
-	viper.AutomaticEnv() // read in environment variables that match
-
-	// If a config file is found, read it in.
-	if err := viper.ReadInConfig(); err == nil {
-		fmt.Println("Using config file:", viper.ConfigFileUsed())
 	}
 }

@@ -1,0 +1,45 @@
+package neo
+
+import (
+	"github.com/neo4j/neo4j-go-driver/neo4j"
+	log "github.com/sirupsen/logrus"
+)
+
+func performQuery(session neo4j.Session, q Query) (err error) {
+	_, err = session.WriteTransaction(func(transaction neo4j.Transaction) (interface{}, error) {
+		log.Debug("Performing query: ", q)
+		result, err := transaction.Run(string(q), map[string]interface{}{"": nil})
+		if err != nil {
+			return nil, err
+		}
+		log.Debug("Query result: ", result)
+
+		if result.Next() {
+			return nil, nil
+		}
+
+		return nil, result.Err()
+	})
+	return
+}
+
+func execute(config Config, query ...Query) {
+	uri := config.URI
+	username := config.Username
+	password := config.Password
+	driver, err := neo4j.NewDriver(uri, neo4j.BasicAuth(username, password, ""))
+	if err != nil {
+		return
+	}
+	defer driver.Close()
+
+	session, err := driver.Session(neo4j.AccessModeWrite)
+	if err != nil {
+		return
+	}
+	defer session.Close()
+
+	for _, q := range query {
+		performQuery(session, q)
+	}
+}

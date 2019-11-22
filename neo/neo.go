@@ -1,39 +1,20 @@
 package neo
 
-import (
-	"github.com/neo4j/neo4j-go-driver/neo4j"
-)
+type Query string
 
-func HelloWorld(uri, username, password string) (err error) {
-	var (
-		driver  neo4j.Driver
-		session neo4j.Session
-		result  neo4j.Result
-	)
+type Resource interface {
+	// Create Neo4j entity from a resource
+	Neo() Query
+}
 
-	driver, err = neo4j.NewDriver(uri, neo4j.BasicAuth(username, password, ""))
-	if err != nil {
-		return
+func mapQueries(resources ...Resource) (queries []Query) {
+	for _, resource := range resources {
+		queries = append(queries, resource.Neo())
 	}
-	defer driver.Close()
+	return
+}
 
-	session, err = driver.Session(neo4j.AccessModeWrite)
-	if err != nil {
-		return
-	}
-	defer session.Close()
-
-	_, err = session.WriteTransaction(func(transaction neo4j.Transaction) (interface{}, error) {
-		result, err = transaction.Run("CREATE (p:Person)-[:LIKES]->(t:Technology)", map[string]interface{}{"": nil})
-		if err != nil {
-			return nil, err
-		}
-
-		if result.Next() {
-			return nil, nil
-		}
-
-		return nil, result.Err()
-	})
-	return err
+func Neoize(config Config, resources ...Resource) {
+	queries := mapQueries(resources...)
+	execute(config, queries...)
 }

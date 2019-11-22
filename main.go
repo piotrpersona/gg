@@ -15,7 +15,7 @@ limitations under the License.
 */
 package main
 
-import "github.com/piotrpersona/gcomv/cmd"
+import "github.com/piotrpersona/gg/cmd"
 
 func main() {
 	cmd.Execute()

@@ -10,7 +10,7 @@ RUN cmake -D CMAKE_BUILD_TYPE=Release \
     -D CMAKE_INSTALL_LIBDIR=lib .. \
     && cmake --build . --target install
 
-WORKDIR /go/src/github.com/piotrpersona/gcomv
+WORKDIR /go/src/github.com/piotrpersona/gg
 
 RUN apk update && apk add git dep
 
@@ -18,22 +18,21 @@ COPY Gopkg.* ./
 
 RUN dep ensure --vendor-only
 
-COPY main.go .
-COPY cmd cmd
-COPY neo neo
-COPY app app
+COPY . .
 
 RUN OOS=linux GOARCH=amd64 go build \
     -tags seabolt_static \
     -ldflags="-w -s" \
-    -o /go/bin/gcomv \
+    -o /go/bin/gg \
     main.go
 
 ENTRYPOINT [ "/go/bin/gcomv" ]
 
 FROM alpine:3.9
 
-COPY --from=stage-build \
-    /go/bin/gcomv /usr/local/bin/gcomv
+RUN apk update && apk add ca-certificates
 
-ENTRYPOINT [ "/usr/local/bin/gcomv" ]
+COPY --from=stage-build \
+    /go/bin/gg /usr/local/bin/gg
+
+ENTRYPOINT [ "/usr/local/bin/gg" ]
