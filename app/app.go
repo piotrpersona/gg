@@ -36,4 +36,11 @@ func Run(appConfig ApplicationConfig) {
 		panic(err)
 	}
 	neo.Neoize(neoconfig, repositories...)
+	for _, repo := range repositories {
+		contributors, err := ghapi.FetchContributors(githubClient, repo.(model.Repository))
+		if err != nil {
+			return
+		}
+		neo.Neoize(neoconfig, contributors...)
+	}
 }
