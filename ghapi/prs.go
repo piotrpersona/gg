@@ -13,7 +13,7 @@ func FetchPullRequests(githubClient *github.Client, r model.Repository) (pullReq
 	repoOwner := r.Owner
 	repo := r.Name
 	repoID := r.ID
-	options := &github.PullRequestListOptions{}
+	options := &github.PullRequestListOptions{State: "all"}
 	githubPullRequests, _, err := githubClient.PullRequests.List(ctx, repoOwner, repo, options)
 	if err != nil {
 		return
