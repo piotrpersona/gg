@@ -8,7 +8,6 @@ import (
 )
 
 type PullRequest struct {
-	ID           int64
 	RepositoryID int64
 	UserID       int64
 	UserName     string
@@ -16,7 +15,6 @@ type PullRequest struct {
 
 func CreatePullRequest(pr *github.PullRequest, repoID int64) PullRequest {
 	return PullRequest{
-		ID:           pr.GetID(),
 		RepositoryID: repoID,
 		UserID:       pr.GetUser().GetID(),
 		UserName:     pr.GetUser().GetLogin(),
@@ -30,8 +28,8 @@ func (pr PullRequest) Neo() neo.Query {
 			ID: %d,
 			Name: "%s"
 		})
-		MERGE (user)-[req:REQUESTED {ID: %d}]->(repo)
+		MERGE (user)-[req:REQUESTED]->(repo)
 		`,
-		pr.RepositoryID, pr.UserID, pr.UserName, pr.ID)
+		pr.RepositoryID, pr.UserID, pr.UserName)
 	return neo.Query(queryString)
 }
