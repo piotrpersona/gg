@@ -9,4 +9,4 @@
 Github users graph visualisation.
 This project was relised during Individual Project University course.
 
-![Contributors visualisation](images/CONTRIBUTORS-feature-3.png)
+![Contributors visualisation](svg/CONTRIBUTORS-feature-3.svg?sanitize=true)
