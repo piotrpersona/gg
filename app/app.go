@@ -1,6 +1,7 @@
 package app
 
 import (
+	"github.com/google/go-github/github"
 	"github.com/piotrpersona/gg/ghapi"
 	"github.com/piotrpersona/gg/model"
 	"github.com/piotrpersona/gg/neo"
@@ -23,6 +24,17 @@ func configureLogging(level log.Level) {
 	log.SetLevel(level)
 }
 
+type connector = func(*github.Client, model.Repository) ([]neo.Resource, error)
+
+func connect(neoconfig neo.Config, githubClient *github.Client, c connector, repoModel model.Repository) error {
+	resources, err := c(githubClient, repoModel)
+	if err != nil {
+		return err
+	}
+	neo.Neoize(neoconfig, resources...)
+	return nil
+}
+
 func Run(appConfig ApplicationConfig) {
 	configureLogging(appConfig.LogLevel)
 	neoconfig := neo.Config{
@@ -38,20 +50,13 @@ func Run(appConfig ApplicationConfig) {
 	neo.Neoize(neoconfig, repositories...)
 	for _, repo := range repositories {
 		repoModel := repo.(model.Repository)
-		contributors, err := ghapi.FetchContributors(githubClient, repoModel)
-		if err != nil {
-			return
+		connectors := []connector{
+			ghapi.FetchContributors,
+			ghapi.FetchPullRequests,
+			ghapi.FetchIssues,
 		}
-		pullRequests, err := ghapi.FetchPullRequests(githubClient, repoModel)
-		if err != nil {
-			return
+		for _, connector := range connectors {
+			connect(neoconfig, githubClient, connector, repoModel)
 		}
-		issues, err := ghapi.FetchIssues(githubClient, repoModel)
-		if err != nil {
-			return
-		}
-		neo.Neoize(neoconfig, contributors...)
-		neo.Neoize(neoconfig, pullRequests...)
-		neo.Neoize(neoconfig, issues...)
 	}
 }
