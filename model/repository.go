@@ -13,6 +13,8 @@ type Repository struct {
 	Name        string
 	Description string
 	URL         string
+	Owner       string
+	OwnerURL    string
 	Archived    bool
 }
 
@@ -22,6 +24,8 @@ func CreateRepository(ghRepository *github.Repository) Repository {
 		Name:        ghRepository.GetName(),
 		Description: ghRepository.GetDescription(),
 		URL:         ghRepository.GetURL(),
+		Owner:       ghRepository.GetOwner().GetLogin(),
+		OwnerURL:    ghRepository.GetOwner().GetURL(),
 		Archived:    ghRepository.GetArchived(),
 	}
 }
@@ -29,12 +33,14 @@ func CreateRepository(ghRepository *github.Repository) Repository {
 func (r Repository) Neo() neo.Query {
 	queryString := fmt.Sprintf(
 		`MERGE
-			(node:repository {
+			(node:Repository {
 				ID: %d,
 				Name: "%s",
 				Description: "%s",
 				URL: "%s",
+				Owner: "%s",
+				OwnerURL: "%s",
 				Archived: %t
-			})`, r.ID, r.Name, r.Description, r.URL, r.Archived)
+			})`, r.ID, r.Name, r.Description, r.URL, r.Owner, r.OwnerURL, r.Archived)
 	return neo.Query(queryString)
 }
