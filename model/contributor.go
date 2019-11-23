@@ -28,7 +28,7 @@ func (c Contributor) Neo() neo.Query {
 			ID: %d,
 			Name: "%s"
 		})
-		MERGE (node)-[r:CONTRIBUTES_TO]->(repo)`,
+		MERGE (node)-[r:CONTRIBUTOR]-(repo)`,
 		c.RepositoryID, c.ID, c.Name)
 	return neo.Query(queryString)
 }

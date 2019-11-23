@@ -28,7 +28,7 @@ func (i Issue) Neo() neo.Query {
 			ID: %d,
 			Name: "%s"
 		})
-		MERGE (user)-[req:ISSUED]->(repo)
+		MERGE (user)-[req:ISSUER]-(repo)
 		`,
 		i.RepositoryID, i.UserID, i.UserName)
 	return neo.Query(queryString)
