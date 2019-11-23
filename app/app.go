@@ -46,7 +46,12 @@ func Run(appConfig ApplicationConfig) {
 		if err != nil {
 			return
 		}
+		issues, err := ghapi.FetchIssues(githubClient, repoModel)
+		if err != nil {
+			return
+		}
 		neo.Neoize(neoconfig, contributors...)
 		neo.Neoize(neoconfig, pullRequests...)
+		neo.Neoize(neoconfig, issues...)
 	}
 }
