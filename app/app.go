@@ -2,6 +2,7 @@ package app
 
 import (
 	"github.com/piotrpersona/gg/ghapi"
+	"github.com/piotrpersona/gg/model"
 	"github.com/piotrpersona/gg/neo"
 
 	log "github.com/sirupsen/logrus"
@@ -23,6 +24,7 @@ func configureLogging(level log.Level) {
 }
 
 func Run(appConfig ApplicationConfig) {
+	configureLogging(appConfig.LogLevel)
 	neoconfig := neo.Config{
 		URI:      appConfig.URI,
 		Username: appConfig.Username,
