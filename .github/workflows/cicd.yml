@@ -28,4 +28,7 @@ jobs:
         username: ${{ secrets.dockerHubUsername }}
         password: ${{ secrets.dockerHubToken }}
     - name: Push image
-      run: docker push piotrpersona/gg:${GITHUB_SHA}
+      run: |
+        docker tag piotrpersona/gg:${GITHUB_SHA} piotrpersona/gg:latest
+        docker push piotrpersona/gg:${GITHUB_SHA}
+        docker push piotrpersona/gg:latest
