@@ -4,18 +4,28 @@ on: [push]
 
 jobs:
   build:
-
-    runs-on: ubuntu-latest
-
+    name: Build & Upload to dockerhub
+    strategy:
+      matrix:
+        go-version: [1.12.x, 1.13.x]
+        os: [ubuntu-latest]
+    runs-on: ${{ matrix.os }}
     steps:
-    - uses: actions/checkout@v1
-    - name: Run tests
-      run: go test ./...
+    - name: Use go ${{ matrix.go-version }}
+      uses: actions/setup-go@v1
+      with:
+        go-version: ${{ matrix.go-version }}
+    - name: Checkout source
+      uses: actions/checkout@v1
+    # - name: Run tests
+    #   run: go test ./...
     - name: Build image
-      run: docker build . --dockerfile Dockerfile --tag piotrpersona/gg:${GITHUB_SHA}
+      run: docker build . --file Dockerfile --tag piotrpersona/gg:${GITHUB_SHA}
     - name: Login to dockerhub.io
-      run: echo ${DOCKERHUB_TOKEN} | docker login --username piotrpersona
-      env:
-        DOCKERHUB_TOKEN: ${{ secrets.dockerHubToken }}
+      uses: azure/docker-login@v1
+      with:
+        loginServer: 'index.docker.io'
+        username: ${{ secrets.dockerHubUsername }}
+        password: ${{ secrets.dockerHubToken }}
     - name: Push image
       run: docker push piotrpersona/gg:${GITHUB_SHA}
