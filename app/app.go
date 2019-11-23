@@ -10,7 +10,7 @@ import (
 type ApplicationConfig struct {
 	URI, Username, Password, Token string
 	Limit                          int
-	LogLevel log.Level
+	LogLevel                       log.Level
 }
 
 func configureLogging(level log.Level) {
