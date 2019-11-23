@@ -7,6 +7,6 @@
 [![Documentation](https://godoc.org/github.com/piotrpersona/gg?status.svg)](http://godoc.org/github.com/piotrpersona/gg)
 
 Github users graph visualisation.
-This project was relised during Individual Project University course.
+This project was realised during Individual Project University course.
 
 ![Contributors visualisation](svg/CONTRIBUTORS-feature-3.svg?sanitize=true)
