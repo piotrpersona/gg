@@ -24,7 +24,7 @@ func CreateContirbutor(ghContirbutor *github.Contributor, repoID int64) Contribu
 func (c Contributor) Neo() neo.Query {
 	queryString := fmt.Sprintf(
 		`MATCH (repo:Repository {ID: %d})
-		MERGE (node:User:Contirbutor {
+		MERGE (node:User {
 			ID: %d,
 			Name: "%s"
 		})
