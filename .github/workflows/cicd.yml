@@ -1,0 +1,21 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Run tests
+      run: go test ./...
+    - name: Build image
+      run: docker build . --dockerfile Dockerfile --tag piotrpersona/gg:${GITHUB_SHA}
+    - name: Login to dockerhub.io
+      run: echo ${DOCKERHUB_TOKEN} | docker login --username piotrpersona
+      env:
+        DOCKERHUB_TOKEN: ${{ secrets.dockerHubToken }}
+    - name: Push image
+      run: docker push piotrpersona/gg:${GITHUB_SHA}
