@@ -13,7 +13,7 @@ import (
 // []model.Repository.
 func FetchRepositories(githubClient *github.Client, since int64) (repositories []neo.Resource, err error) {
 	ctx := context.Background()
-	options := &github.RepositoryListAllOptions{Since: since}
+	options := &github.RepositoryListAllOptions{Since: 1}
 	githubRepositories, _, err := githubClient.Repositories.ListAll(ctx, options)
 	if err != nil {
 		return

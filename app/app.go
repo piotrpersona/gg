@@ -12,21 +12,6 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-func neoize(
-	wg *sync.WaitGroup,
-	neocfg neo.Config,
-	githubClient *github.Client,
-	repoResource ghapi.RepoResource,
-	repoModel model.Repository,
-) {
-	defer wg.Done()
-	resources, err := repoResource.Fetch(githubClient, repoModel)
-	if err != nil {
-		log.Error(err)
-	}
-	neo.Neoize(neocfg, resources...)
-}
-
 func fetchResources(
 	neocfg neo.Config,
 	githubClient *github.Client,
@@ -37,18 +22,16 @@ func fetchResources(
 	numberOfResourcesTasks := len(repoResources)
 	resourcesWg.Add(numberOfResourcesTasks)
 	for _, repoResource := range repoResources {
-		go neoize(&resourcesWg, neocfg, githubClient, repoResource, repoModel)
+		go func(wg *sync.WaitGroup, repoResource ghapi.RepoResource) {
+			defer wg.Done()
+			resources, err := repoResource.Fetch(githubClient, repoModel)
+			if err != nil {
+				log.Error(err)
+			}
+			neo.Neoize(neocfg, resources...)
+		}(&resourcesWg, repoResource)
 	}
 	resourcesWg.Wait()
-}
-
-func lastSeenRepoID(since int64, neoconfig neo.Config) (lastID int64, err error) {
-	lastID = since
-	if since < 0 {
-		lastID, err = neo.FetchLastSeenID(neoconfig)
-		return
-	}
-	return
 }
 
 // Run will run application with provided application config
@@ -76,8 +59,8 @@ func Run(appConfig ApplicationConfig) {
 	repoResources := repoResources()
 
 	var repoWg sync.WaitGroup
-	numberOfRepositories := len(repositories)
-	repoWg.Add(numberOfRepositories)
+	numberOfRepoTasks := len(repositories)
+	repoWg.Add(numberOfRepoTasks)
 	for _, repository := range repositories {
 		go func(repoWg *sync.WaitGroup, repository neo.Resource) {
 			defer repoWg.Done()
@@ -91,5 +74,4 @@ func Run(appConfig ApplicationConfig) {
 		}(&repoWg, repository)
 	}
 	repoWg.Wait()
-	log.Info("Done!")
 }
