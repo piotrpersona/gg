@@ -20,7 +20,11 @@ jobs:
     # - name: Run tests
     #   run: go test ./...
     - name: Build image
-      run: docker build . --file Dockerfile --tag piotrpersona/gg:${GITHUB_SHA}
+      run: |
+        docker build . \
+          --file Dockerfile \
+          --build-arg VCS_REF=${GITHUB_SHA} \
+          --tag piotrpersona/gg:${GITHUB_SHA}
     - name: Login to dockerhub.io
       uses: azure/docker-login@v1
       with:
