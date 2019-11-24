@@ -8,7 +8,12 @@ import (
 	"github.com/piotrpersona/gg/neo"
 )
 
-func FetchPullRequests(githubClient *github.Client, r model.Repository) (pullRequests []neo.Resource, err error) {
+// Contributors represents GitHub API PullRequests mapping with model resource.
+type PullRequests struct{}
+
+// Fetch is an implementation of RepoResource interface.
+// It will create []model.PullRequest from GitHub API PullRequest.
+func (pr PullRequests) Fetch(githubClient *github.Client, r model.Repository) (pullRequests []neo.Resource, err error) {
 	ctx := context.Background()
 	repoOwner := r.Owner
 	repo := r.Name

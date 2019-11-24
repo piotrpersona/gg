@@ -8,7 +8,12 @@ import (
 	"github.com/piotrpersona/gg/neo"
 )
 
-func FetchIssues(githubClient *github.Client, r model.Repository) (issues []neo.Resource, err error) {
+// Contributors represents GitHub API Issues mapping with model resource.
+type Issues struct{}
+
+// Fetch is an implementation of RepoResource interface.
+// It will create []model.Issues from GitHub API Issues.
+func (i Issues) Fetch(githubClient *github.Client, r model.Repository) (issues []neo.Resource, err error) {
 	ctx := context.Background()
 	repoOwner := r.Owner
 	repo := r.Name

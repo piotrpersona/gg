@@ -3,7 +3,6 @@ package app
 import (
 	"os"
 
-	"github.com/google/go-github/github"
 	"github.com/piotrpersona/gg/ghapi"
 	"github.com/piotrpersona/gg/model"
 	"github.com/piotrpersona/gg/neo"
@@ -11,39 +10,10 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-type ApplicationConfig struct {
-	URI, Username, Password, Token string
-	Limit                          int
-	LogLevel                       log.Level
-}
-
-func configureLogging(level log.Level) {
-	log.SetFormatter(&log.TextFormatter{
-		DisableColors:    true,
-		FullTimestamp:    true,
-		QuoteEmptyFields: true,
-	})
-	log.SetLevel(level)
-}
-
-type connector = func(*github.Client, model.Repository) ([]neo.Resource, error)
-
-func connect(neoconfig neo.Config, githubClient *github.Client, c connector, repoModel model.Repository) error {
-	resources, err := c(githubClient, repoModel)
-	if err != nil {
-		return err
-	}
-	neo.Neoize(neoconfig, resources...)
-	return nil
-}
-
+// Run will run application with provided application config
 func Run(appConfig ApplicationConfig) {
 	configureLogging(appConfig.LogLevel)
-	neoconfig := neo.Config{
-		URI:      appConfig.URI,
-		Username: appConfig.Username,
-		Password: appConfig.Password,
-	}
+	neoconfig := appConfig.neoconfig()
 	githubClient := ghapi.AuthenticatedClient(appConfig.Token)
 	repositories, err := ghapi.FetchRepositories(githubClient, appConfig.Limit)
 	if err != nil {
@@ -51,18 +21,21 @@ func Run(appConfig ApplicationConfig) {
 		os.Exit(1)
 	}
 	neo.Neoize(neoconfig, repositories...)
-	for _, repo := range repositories {
-		repoModel := repo.(model.Repository)
-		connectors := []connector{
-			ghapi.FetchContributors,
-			ghapi.FetchPullRequests,
-			ghapi.FetchIssues,
-		}
-		for _, connector := range connectors {
-			err := connect(neoconfig, githubClient, connector, repoModel)
+
+	repoResources := []ghapi.RepoResource{
+		ghapi.Contributors{},
+		ghapi.PullRequests{},
+		ghapi.Issues{},
+	}
+
+	for _, repository := range repositories {
+		repoModel := repository.(model.Repository)
+		for _, repoResource := range repoResources {
+			resources, err := repoResource.Fetch(githubClient, repoModel)
 			if err != nil {
 				log.Error(err)
 			}
+			neo.Neoize(neoconfig, resources...)
 		}
 	}
 }

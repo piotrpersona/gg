@@ -9,6 +9,8 @@ import (
 	"github.com/piotrpersona/gg/neo"
 )
 
+// FetchRepositories will fetch GitHub API Repositories and map them onto
+// []model.Repository.
 func FetchRepositories(githubClient *github.Client, limit int) (repositories []neo.Resource, err error) {
 	ctx := context.Background()
 	options := &github.RepositoryListAllOptions{Since: 1}

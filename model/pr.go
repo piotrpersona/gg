@@ -7,12 +7,14 @@ import (
 	"github.com/piotrpersona/gg/neo"
 )
 
+// PullRequest represents repository pull request that was created by user as a graph relation.
 type PullRequest struct {
 	RepositoryID int64
 	UserID       int64
 	UserName     string
 }
 
+// CreatePullRequest will create model PullRequest object from GitHub API PullRequest.
 func CreatePullRequest(pr *github.PullRequest, repoID int64) PullRequest {
 	return PullRequest{
 		RepositoryID: repoID,
@@ -21,6 +23,10 @@ func CreatePullRequest(pr *github.PullRequest, repoID int64) PullRequest {
 	}
 }
 
+// Neo is an implementation of neo.Resource interface.
+// It will return PullRequest as neo4j query string.
+// There will be created Repository and pull requester user nodes.
+// Repository will be connected with pull requester node with relation PULL_REQUEST.
 func (pr PullRequest) Neo() neo.Query {
 	queryString := fmt.Sprintf(
 		`MATCH (repo:Repository {ID: %d})

@@ -7,6 +7,7 @@ import (
 	"golang.org/x/oauth2"
 )
 
+// AuthenticatedClient creates authenticated github client with provided token.
 func AuthenticatedClient(token string) *github.Client {
 	ts := oauth2.StaticTokenSource(
 		&oauth2.Token{AccessToken: token},

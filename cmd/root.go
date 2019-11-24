@@ -49,6 +49,7 @@ func buildRootCmd() (rootCmd *cobra.Command) {
 	return
 }
 
+// Execute will execute root command.
 func Execute() {
 	viper.AutomaticEnv()
 	rootCmd := buildRootCmd()

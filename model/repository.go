@@ -7,7 +7,7 @@ import (
 	"github.com/piotrpersona/gg/neo"
 )
 
-// Repository represents github repository node
+// Repository represents repository as a graph node.
 type Repository struct {
 	ID          int64
 	Name        string
@@ -17,8 +17,8 @@ type Repository struct {
 	Archived    bool
 }
 
+// CreateRepository will create model Repository object from GitHub API Repository.
 func CreateRepository(ghRepository *github.Repository) Repository {
-
 	return Repository{
 		ID:          ghRepository.GetID(),
 		Name:        ghRepository.GetName(),
@@ -29,6 +29,10 @@ func CreateRepository(ghRepository *github.Repository) Repository {
 	}
 }
 
+// Neo is an implementation of neo.Resource interface.
+// It will return Repository as neo4j query string.
+// There will be created Repository and owner user nodes.
+// Repository will be connected with owner node with relation OWNER.
 func (r Repository) Neo() neo.Query {
 	queryString := fmt.Sprintf(
 		`MERGE (repo:Repository {
