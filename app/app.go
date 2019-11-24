@@ -53,8 +53,8 @@ func Run(appConfig ApplicationConfig) {
 	}
 
 	var repoWg sync.WaitGroup
-	numberOfRepoTasks := len(repositories)
-	repoWg.Add(numberOfRepoTasks)
+	numberOfRepositories := len(repositories)
+	repoWg.Add(numberOfRepositories)
 	for _, repository := range repositories {
 		go func(repoWg *sync.WaitGroup, repository neo.Resource) {
 			defer repoWg.Done()
