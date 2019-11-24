@@ -1,10 +1,8 @@
 # gg
-
 ![](https://github.com/piotrpersona/gg/workflows/CI/badge.svg?branch=master)
-![](https://github.com/piotrpersona/gg/workflows/CI/badge.svg?branch=develop)
-
 [![Go Report Card](https://goreportcard.com/badge/github.com/piotrpersona/gg)](https://goreportcard.com/report/github.com/piotrpersona/gg)
 [![Documentation](https://godoc.org/github.com/piotrpersona/gg?status.svg)](http://godoc.org/github.com/piotrpersona/gg)
+[![Open Source Love](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/)
 
 Github users graph visualisation.
 This project was realised during Individual Project University course.
