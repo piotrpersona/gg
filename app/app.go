@@ -55,6 +55,8 @@ func Run(appConfig ApplicationConfig) {
 		log.Fatal(err)
 		os.Exit(1)
 	}
+	log.Info("Fetching repositories starting with: ", since)
+
 	repositories, err := ghapi.FetchRepositories(githubClient, since)
 	if err != nil {
 		log.Fatal("Unable to fetch Github repositories")
@@ -85,4 +87,5 @@ func Run(appConfig ApplicationConfig) {
 		}(&repoWg, repository)
 	}
 	repoWg.Wait()
+	log.Info("Done!")
 }
