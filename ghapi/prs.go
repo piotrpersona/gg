@@ -8,7 +8,7 @@ import (
 	"github.com/piotrpersona/gg/neo"
 )
 
-// Contributors represents GitHub API PullRequests mapping with model resource.
+// PullRequests represents GitHub API PullRequests mapping with model resource.
 type PullRequests struct{}
 
 // Fetch is an implementation of RepoResource interface.

@@ -8,7 +8,7 @@ import (
 	"github.com/piotrpersona/gg/neo"
 )
 
-// Contributors represents GitHub API Issues mapping with model resource.
+// Issues represents GitHub API Issues mapping with model resource.
 type Issues struct{}
 
 // Fetch is an implementation of RepoResource interface.
