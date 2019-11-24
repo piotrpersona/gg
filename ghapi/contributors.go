@@ -19,7 +19,7 @@ func FetchContributors(githubClient *github.Client, r model.Repository) (contrib
 		return
 	}
 	for _, githubContributor := range githubContributors {
-		contirbutor := model.CreateContirbutor(githubContributor, repoID)
+		contirbutor := model.CreateContributor(githubContributor, repoID)
 		contributors = append(contributors, contirbutor)
 	}
 	return

@@ -13,10 +13,10 @@ type Contributor struct {
 	RepositoryID int64
 }
 
-func CreateContirbutor(ghContirbutor *github.Contributor, repoID int64) Contributor {
+func CreateContributor(ghContributor *github.Contributor, repoID int64) Contributor {
 	return Contributor{
-		ID:           ghContirbutor.GetID(),
-		Name:         ghContirbutor.GetLogin(),
+		ID:           ghContributor.GetID(),
+		Name:         ghContributor.GetLogin(),
 		RepositoryID: repoID,
 	}
 }
