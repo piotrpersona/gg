@@ -9,7 +9,7 @@ import (
 // Neo4j related properties.
 type ApplicationConfig struct {
 	URI, Username, Password, Token string
-	Limit                          int
+	Since                          int64
 	LogLevel                       log.Level
 }
 

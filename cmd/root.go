@@ -12,7 +12,7 @@ import (
 
 func buildRootCmd() (rootCmd *cobra.Command) {
 	var (
-		limit                                    int
+		since                                    int64
 		uri, username, password, token, loglevel string
 	)
 
@@ -31,7 +31,7 @@ func buildRootCmd() (rootCmd *cobra.Command) {
 				Username: username,
 				Password: password,
 				Token:    token,
-				Limit:    limit,
+				Since:    since,
 				LogLevel: level,
 			}
 			app.Run(applicationConfig)
@@ -39,7 +39,7 @@ func buildRootCmd() (rootCmd *cobra.Command) {
 	}
 
 	flags := rootCmd.Flags()
-	flags.IntVarP(&limit, "limit", "l", 1, "Number of repositories to fetch")
+	flags.Int64VarP(&since, "since", "s", 1, "Starting point of repositories to fetch")
 	flags.StringVarP(&uri, "uri", "", viper.GetString("NEO_URI"), "Neo4j compatible URI")
 	flags.StringVarP(&username, "username", "u", viper.GetString("NEO_USER"), "Neo4j connection username")
 	flags.StringVarP(&password, "password", "p", viper.GetString("NEO_PASS"), "Neo4j connection password")

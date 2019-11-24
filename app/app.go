@@ -39,7 +39,7 @@ func Run(appConfig ApplicationConfig) {
 	configureLogging(appConfig.LogLevel)
 	neoconfig := appConfig.neoconfig()
 	githubClient := ghapi.AuthenticatedClient(appConfig.Token)
-	repositories, err := ghapi.FetchRepositories(githubClient, appConfig.Limit)
+	repositories, err := ghapi.FetchRepositories(githubClient, appConfig.Since)
 	if err != nil {
 		log.Fatal(err)
 		os.Exit(1)
