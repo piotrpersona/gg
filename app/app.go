@@ -1,6 +1,8 @@
 package app
 
 import (
+	"os"
+
 	"github.com/google/go-github/github"
 	"github.com/piotrpersona/gg/ghapi"
 	"github.com/piotrpersona/gg/model"
@@ -45,7 +47,8 @@ func Run(appConfig ApplicationConfig) {
 	githubClient := ghapi.AuthenticatedClient(appConfig.Token)
 	repositories, err := ghapi.FetchRepositories(githubClient, appConfig.Limit)
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
+		os.Exit(1)
 	}
 	neo.Neoize(neoconfig, repositories...)
 	for _, repo := range repositories {
@@ -56,7 +59,10 @@ func Run(appConfig ApplicationConfig) {
 			ghapi.FetchIssues,
 		}
 		for _, connector := range connectors {
-			connect(neoconfig, githubClient, connector, repoModel)
+			err := connect(neoconfig, githubClient, connector, repoModel)
+			if err != nil {
+				log.Error(err)
+			}
 		}
 	}
 }
