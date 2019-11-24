@@ -26,6 +26,10 @@ func FetchLastSeenID(config Config) (lastSeenID int64, err error) {
 	if err != nil {
 		return
 	}
-	lastSeenID = result.(int64)
+	if result != nil {
+		lastSeenID = result.(int64)
+	} else {
+		lastSeenID = 0
+	}
 	return
 }
