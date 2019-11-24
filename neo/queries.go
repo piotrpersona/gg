@@ -5,8 +5,8 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-func performQuery(session neo4j.Session, q Query) (err error) {
-	_, err = session.WriteTransaction(func(transaction neo4j.Transaction) (interface{}, error) {
+func performQuery(session neo4j.Session, q Query) (result interface{}, err error) {
+	result, err = session.WriteTransaction(func(transaction neo4j.Transaction) (interface{}, error) {
 		log.Debug("Performing query: ", q)
 		result, err := transaction.Run(string(q), map[string]interface{}{"": nil})
 		if err != nil {
@@ -15,7 +15,7 @@ func performQuery(session neo4j.Session, q Query) (err error) {
 		log.Debug("Query result: ", result)
 
 		if result.Next() {
-			return nil, nil
+			return result.Record().GetByIndex(0), nil
 		}
 
 		return nil, result.Err()
@@ -40,6 +40,11 @@ func execute(config Config, query ...Query) {
 	defer session.Close()
 
 	for _, q := range query {
-		performQuery(session, q)
+		result, err := performQuery(session, q)
+		if err != nil {
+			log.Error("Unable to perform query: ", q)
+			log.Fatal(err)
+		}
+		log.Debug("Query result: ", result)
 	}
 }

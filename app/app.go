@@ -34,13 +34,30 @@ func fetchResources(
 	resourcesWg.Wait()
 }
 
+func lastSeenRepoID(since int64, neoconfig neo.Config) (lastID int64, err error) {
+	lastID = since
+	if since < 0 {
+		lastID, err = neo.FetchLastSeenID(neoconfig)
+		return
+	}
+	return
+}
+
 // Run will run application with provided application config
 func Run(appConfig ApplicationConfig) {
 	configureLogging(appConfig.LogLevel)
 	neoconfig := appConfig.neoconfig()
 	githubClient := ghapi.AuthenticatedClient(appConfig.Token)
-	repositories, err := ghapi.FetchRepositories(githubClient, appConfig.Since)
+
+	since, err := lastSeenRepoID(appConfig.Since, neoconfig)
 	if err != nil {
+		log.Fatal("Unable to fetch last seen ID")
+		log.Fatal(err)
+		os.Exit(1)
+	}
+	repositories, err := ghapi.FetchRepositories(githubClient, since)
+	if err != nil {
+		log.Fatal("Unable to fetch Github repositories")
 		log.Fatal(err)
 		os.Exit(1)
 	}

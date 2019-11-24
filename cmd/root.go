@@ -39,7 +39,7 @@ func buildRootCmd() (rootCmd *cobra.Command) {
 	}
 
 	flags := rootCmd.Flags()
-	flags.Int64VarP(&since, "since", "s", 1, "Starting point of repositories to fetch")
+	flags.Int64VarP(&since, "since", "s", -1, "Starting point of repositories to fetch")
 	flags.StringVarP(&uri, "uri", "", viper.GetString("NEO_URI"), "Neo4j compatible URI")
 	flags.StringVarP(&username, "username", "u", viper.GetString("NEO_USER"), "Neo4j connection username")
 	flags.StringVarP(&password, "password", "p", viper.GetString("NEO_PASS"), "Neo4j connection password")
