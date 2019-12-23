@@ -9,6 +9,7 @@ import (
 
 // PullRequest represents repository pull request that was created by user as a graph relation.
 type PullRequest struct {
+	ID           int64
 	RepositoryID int64
 	UserID       int64
 	UserName     string
@@ -17,6 +18,7 @@ type PullRequest struct {
 // CreatePullRequest will create model PullRequest object from GitHub API PullRequest.
 func CreatePullRequest(pr *github.PullRequest, repoID int64) PullRequest {
 	return PullRequest{
+		ID:           pr.GetID(),
 		RepositoryID: repoID,
 		UserID:       pr.GetUser().GetID(),
 		UserName:     pr.GetUser().GetLogin(),
@@ -34,8 +36,8 @@ func (pr PullRequest) Neo() neo.Query {
 			ID: %d,
 			Name: "%s"
 		})
-		MERGE (user)-[req:PULL_REQUEST]-(repo)
+		MERGE (user)-[req:PULL_REQUEST {ID: %d}]-(repo)
 		`,
-		pr.RepositoryID, pr.UserID, pr.UserName)
+		pr.RepositoryID, pr.UserID, pr.UserName, pr.ID)
 	return neo.Query(queryString)
 }
