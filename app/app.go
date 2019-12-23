@@ -12,6 +12,21 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+func neoize(
+	wg *sync.WaitGroup,
+	neocfg neo.Config,
+	githubClient *github.Client,
+	repoResource ghapi.RepoResource,
+	repoModel model.Repository,
+) {
+	defer wg.Done()
+	resources, err := repoResource.Fetch(githubClient, repoModel)
+	if err != nil {
+		log.Error(err)
+	}
+	neo.Neoize(neocfg, resources...)
+}
+
 func fetchResources(
 	neocfg neo.Config,
 	githubClient *github.Client,
@@ -22,14 +37,7 @@ func fetchResources(
 	numberOfResourcesTasks := len(repoResources)
 	resourcesWg.Add(numberOfResourcesTasks)
 	for _, repoResource := range repoResources {
-		go func(wg *sync.WaitGroup, repoResource ghapi.RepoResource) {
-			defer wg.Done()
-			resources, err := repoResource.Fetch(githubClient, repoModel)
-			if err != nil {
-				log.Error(err)
-			}
-			neo.Neoize(neocfg, resources...)
-		}(&resourcesWg, repoResource)
+		go neoize(&resourcesWg, neocfg, githubClient, repoResource, repoModel)
 	}
 	resourcesWg.Wait()
 }
@@ -65,11 +73,7 @@ func Run(appConfig ApplicationConfig) {
 	}
 	neo.Neoize(neoconfig, repositories...)
 
-	repoResources := []ghapi.RepoResource{
-		ghapi.Contributors{},
-		ghapi.PullRequests{},
-		ghapi.Issues{},
-	}
+	repoResources := repoResources()
 
 	var repoWg sync.WaitGroup
 	numberOfRepositories := len(repositories)
