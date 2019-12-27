@@ -3,6 +3,8 @@ package cmd
 import (
 	"os"
 
+	"github.com/piotrpersona/gg/model"
+
 	"github.com/piotrpersona/gg/app"
 	"github.com/piotrpersona/gg/ghapi"
 
@@ -50,9 +52,9 @@ func buildRootCmd() (rootCmd *cobra.Command) {
 	flags.StringVarP(&password, "password", "p", viper.GetString("NEO_PASS"), "Neo4j connection password")
 	flags.StringVarP(&token, "token", "t", viper.GetString("GITHUB_TOKEN"), "GitHub API Token String")
 	flags.StringVarP(&loglevel, "loglevel", "", log.InfoLevel.String(), "Log level")
-	flags.Int64Var(&reviewersWeight, "review", 20, "Weight of review")
-	flags.Int64Var(&issueCommentWeight, "issue-comment", 10, "Weight of issue comment")
-	flags.Int64Var(&pullRequestCommentWeight, "pr-comment", 16, "Weight of pull request comment")
+	flags.Int64Var(&reviewersWeight, "review", model.REVIEW_WEIGHT, "Weight of review")
+	flags.Int64Var(&issueCommentWeight, "issue-comment", model.ISSUE_COMMENT_WEIGHT, "Weight of issue comment")
+	flags.Int64Var(&pullRequestCommentWeight, "pr-comment", model.PULL_REQUEST_COMMENT_WEIGHT, "Weight of pull request comment")
 	flags.StringVarP(&githubReposQuery, "query", "q", ghapi.DEFAULT_QUERY, "Github repositories search query")
 
 	return

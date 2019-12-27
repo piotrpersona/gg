@@ -7,6 +7,10 @@ import (
 	"github.com/piotrpersona/gg/neo"
 )
 
+const (
+	PULL_REQUEST_COMMENT_WEIGHT = 16
+)
+
 // PullRequestComment represents PullRequest comment author relation with
 // PullRequest author - pull request comment is a different entity than issue
 // comment. Issue comment is for both PRs and Issues, PR Comment is for

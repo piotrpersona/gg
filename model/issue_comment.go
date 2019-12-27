@@ -7,6 +7,10 @@ import (
 	"github.com/piotrpersona/gg/neo"
 )
 
+const (
+	ISSUE_COMMENT_WEIGHT = 10
+)
+
 // IssueComment represents PullRequest/Issue comment author relation with
 // PullRequest/Issue author.
 type IssueComment struct {

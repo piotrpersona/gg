@@ -7,6 +7,10 @@ import (
 	"github.com/piotrpersona/gg/neo"
 )
 
+const (
+	REVIEW_WEIGHT = 10
+)
+
 // Reviewer represents Review author relation with
 // PullRequest/Issue author.
 type Reviewer struct {
