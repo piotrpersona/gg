@@ -11,11 +11,16 @@ import (
 )
 
 // FetchQueriedRepositories will download repositories by the gived query.
-func FetchQueriedRepositories(githubClient *github.Client) (repositories []neo.Resource, err error) {
+func FetchQueriedRepositories(githubClient *github.Client, page, perPage int) (repositories []neo.Resource, err error) {
 	ctx := context.Background()
-	options := github.SearchOptions{}
+	options := github.SearchOptions{
+		ListOptions: github.ListOptions{
+			Page:    page,
+			PerPage: perPage,
+		},
+	}
 
-	stars := 500
+	stars := 1000
 	// followers := 500
 	// topics := 3
 

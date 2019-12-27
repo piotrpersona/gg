@@ -3,6 +3,7 @@ package app
 import (
 	"os"
 	"sync"
+	"time"
 
 	"github.com/piotrpersona/gg/ghapi"
 	"github.com/piotrpersona/gg/model"
@@ -19,7 +20,9 @@ func Run(appConfig ApplicationConfig) {
 	log.Info("Application config loaded")
 
 	log.Info("Fetching Github repositories")
-	repositories, err := ghapi.FetchQueriedRepositories(githubClient)
+	page := 10
+	perPage := 30
+	repositories, err := ghapi.FetchQueriedRepositories(githubClient, page, perPage)
 	if err != nil {
 		log.Fatal("Unable to fetch Github repositories")
 		log.Fatal(err)
@@ -28,6 +31,7 @@ func Run(appConfig ApplicationConfig) {
 
 	numberOfRepositories := len(repositories)
 	log.Infof("Downloaded %d repositories", numberOfRepositories)
+	log.Infof("Repositories: ", repositories)
 
 	prRequesterService := ghapi.RequestersService{GithubClient: githubClient}
 	prServices := ghapi.PullRequestServices(githubClient, appConfig.PullRequestWeights)
@@ -52,6 +56,7 @@ func Run(appConfig ApplicationConfig) {
 					if err != nil {
 						log.Warn(err)
 					}
+					time.Sleep(time.Millisecond * 1000)
 					neo.Neoize(neoconfig, prResources...)
 				}
 			}

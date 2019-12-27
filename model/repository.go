@@ -15,6 +15,10 @@ type Repository struct {
 	Owner   string
 }
 
+func (r Repository) String() string {
+	return fmt.Sprintf("%s/%s", r.Owner, r.Name)
+}
+
 // CreateRepository will create model Repository object from GitHub API Repository.
 func CreateRepository(ghRepository *github.Repository) Repository {
 	return Repository{
