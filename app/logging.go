@@ -6,7 +6,7 @@ import (
 
 func configureLogging(level log.Level) {
 	log.SetFormatter(&log.TextFormatter{
-		DisableColors:    true,
+		DisableColors:    false,
 		FullTimestamp:    true,
 		QuoteEmptyFields: true,
 	})
