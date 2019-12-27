@@ -64,13 +64,13 @@ Call Louvain algorithm:
 
 ```sql
 CALL algo.beta.louvain.stream('User', null,
-{ graph: 'huge', direction: 'BOTH', weightProperty: 'Weight' })
+{ graph: 'huge', direction: 'BOTH', weightProperty: 'Weight', includeIntermediateCommunities: true })
 YIELD nodeId, community, communities
 RETURN algo.asNode(nodeId).Name as name, community, communities
 ORDER BY name ASC
 ```
 
-Example result of louvain algorithm
+### Example result of louvain algorithm
 
 |name              |community|
 |------------------|---------|
