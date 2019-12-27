@@ -21,7 +21,13 @@ func Run(appConfig ApplicationConfig) {
 	log.Info("Application config loaded")
 
 	log.Info("Fetching Github repositories")
-	page := 3
+	page, err := neo.GetLastSeenPage(neoconfig)
+	if err != nil {
+		log.Error("Unable to fetch last seen page")
+		log.Fatal(err)
+		os.Exit(1)
+	}
+
 	perPage := 30
 	repositories, err := ghapi.FetchQueriedRepositories(githubClient, page, perPage)
 	if err != nil {

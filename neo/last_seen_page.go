@@ -9,16 +9,23 @@ func IncrementPageNumber(session neo4j.Session) {
 	performQuery(session, query)
 }
 
-func GetLastSeenPage(session neo4j.Session) (lastSeenID int64, err error) {
+func GetLastSeenPage(config Config) (lastSeenID int, err error) {
+	session, driver, err := CreateSession(config)
+	if err != nil {
+		return
+	}
+	defer driver.Close()
+	defer session.Close()
+
 	query := Query(`MATCH (p:Page) RETURN p.Number`)
 	result, err := performQuery(session, query)
 	if err != nil {
 		return
 	}
 	if result == nil {
-		lastSeenID = int64(0)
+		lastSeenID = 0
 	} else {
-		lastSeenID = result.(int64)
+		lastSeenID = result.(int)
 	}
 	return
 }
