@@ -36,8 +36,8 @@ func (prc PullRequestComment) Neo() neo.Query {
 			ID: %d,
 			Name: "%s"
 		})
-		MERGE (user)-[r:COMMENTED_PULL_REQUEST {Weight: %d, PullRequestID: %d}]-(requester)
+		MERGE (user)-[r:COMMENTED_PULL_REQUEST {%s: %d, PullRequestID: %d}]-(requester)
 		`,
-		prc.RequesterID, prc.CommenterID, prc.CommenterUserName, prc.Weight, prc.PullRequestID)
+		prc.RequesterID, prc.CommenterID, prc.CommenterUserName, neo.WEIGHT_LABEL, prc.Weight, prc.PullRequestID)
 	return neo.Query(queryString)
 }

@@ -25,19 +25,19 @@ func CreateIssueComment(prr *github.IssueComment, pullRequestID, requesterID, we
 	}
 }
 
-func (r IssueComment) ID() int64 {
-	return r.IssuerID
+func (ic IssueComment) ID() int64 {
+	return ic.IssuerID
 }
 
-func (r IssueComment) Neo() neo.Query {
+func (ic IssueComment) Neo() neo.Query {
 	queryString := fmt.Sprintf(
 		`MATCH (requester:User {ID: %d})
 		MERGE (user:User {
 			ID: %d,
 			Name: "%s"
 		})
-		MERGE (user)-[r:COMMENTED_ISSUE {Weight: %d, PullRequestID: %d}]-(requester)
+		MERGE (user)-[r:COMMENTED_ISSUE {%s: %d, PullRequestID: %d}]-(requester)
 		`,
-		r.RequesterID, r.IssuerID, r.IssuerUserName, r.Weight, r.PullRequestID)
+		ic.RequesterID, ic.IssuerID, ic.IssuerUserName, neo.WEIGHT_LABEL, ic.Weight, ic.PullRequestID)
 	return neo.Query(queryString)
 }

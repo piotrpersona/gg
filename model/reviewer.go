@@ -36,8 +36,8 @@ func (r Reviewer) Neo() neo.Query {
 			ID: %d,
 			Name: "%s"
 		})
-		MERGE (user)-[r:REVIEWED {Weight: %d, PullRequestID: %d}]-(requester)
+		MERGE (user)-[r:REVIEWED {%s: %d, PullRequestID: %d}]-(requester)
 		`,
-		r.RequesterID, r.ReviewerID, r.ReviewerUserName, r.Weight, r.PullRequestID)
+		r.RequesterID, r.ReviewerID, r.ReviewerUserName, neo.WEIGHT_LABEL, r.Weight, r.PullRequestID)
 	return neo.Query(queryString)
 }
