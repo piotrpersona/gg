@@ -57,7 +57,23 @@ docker run \
 or ask for help
 
 ```console
-docker run piotrpersona/gg --help
+$ docker run piotrpersona/gg --help
+Fetch repositories from a github and build a graph
+
+Usage:
+  gg [flags]
+
+Flags:
+  -h, --help                help for gg
+      --issue-comment int   Weight of issue comment (default 10)
+      --loglevel string     Log level (default "info")
+  -p, --password string     Neo4j connection password
+      --pr-comment int      Weight of pull request comment (default 16)
+  -q, --query string        Github repositories search query (default "stars:>=1000")
+      --review int          Weight of review (default 10)
+  -t, --token string        GitHub API Token String
+      --uri string          Neo4j compatible URI
+  -u, --username string     Neo4j connection username
 ```
 
 ## Detect communities
