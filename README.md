@@ -63,7 +63,8 @@ Enter http://localhost:7474 and pass credentials defined with `NEO_AUTH`.
 Call Louvain algorithm:
 
 ```sql
-CALL algo.beta.louvain.stream('User', null, { graph: 'huge', direction: 'BOTH' })
+CALL algo.beta.louvain.stream('User', null,
+{ graph: 'huge', direction: 'BOTH', weightProperty: 'Weight' })
 YIELD nodeId, community, communities
 RETURN algo.asNode(nodeId).Name as name, community, communities
 ORDER BY name ASC
