@@ -23,22 +23,15 @@ func performQuery(session neo4j.Session, q Query) (result interface{}, err error
 	return
 }
 
-func execute(config Config, query ...Query) {
-	uri := config.URI
-	username := config.Username
-	password := config.Password
-	driver, err := neo4j.NewDriver(uri, neo4j.BasicAuth(username, password, ""))
+func execute(config Config, query ...Query) (err error) {
+	session, driver, err := CreateSession(config)
 	if err != nil {
+		log.Error("Unable to create session")
+		log.Error(err)
 		return
 	}
 	defer driver.Close()
-
-	session, err := driver.Session(neo4j.AccessModeWrite)
-	if err != nil {
-		return
-	}
 	defer session.Close()
-
 	for _, q := range query {
 		result, err := performQuery(session, q)
 		if err != nil {
@@ -47,4 +40,5 @@ func execute(config Config, query ...Query) {
 		}
 		log.Debug("Query result: ", result)
 	}
+	return err
 }
