@@ -72,48 +72,48 @@ ORDER BY name ASC
 
 ### Example result of louvain algorithm
 
-|name              |community|
-|------------------|---------|
-|BethGriggs        |16       |
-|BridgeAR          |16       |
-|ChALkeR           |23       |
-|Trott             |23       |
-|ZYSzys            |16       |
-|addaleax          |22       |
-|antsmartian       |22       |
-|bcoe              |11       |
-|bnoordhuis        |22       |
-|cjihrig           |7        |
-|devnexen          |16       |
-|devnexen          |16       |
-|devsnek           |22       |
-|devsnek           |22       |
-|dnlup             |16       |
-|eugeneo           |7        |
-|gabrielschulhof   |16       |
-|gabrielschulhof   |16       |
-|gireeshpunathil   |23       |
-|guybedford        |22       |
-|jasnell           |23       |
-|jkrems            |22       |
-|johnmuhl          |7        |
-|johnmuhl          |7        |
-|joyeecheung       |7        |
-|juanarbol         |7        |
-|legendecas        |7        |
-|ljharb            |22       |
-|lpinca            |16       |
-|lundibundi        |16       |
-|marswong          |23       |
-|mcollina          |7        |
-|mscdex            |7        |
-|mscdex            |7        |
-|nodejs-github-bot |16       |
-|nschonni          |23       |
-|richardlau        |16       |
-|ronag             |7        |
-|santoshyadav198613|23       |
-|targos            |22       |
-|trivikr           |23       |
-|wa-Nadoo          |7        |
-|yinzara           |7        |
+|name              |community|communities|
+|------------------|---------|-----------|
+|BethGriggs        |16       |[31,16]    |
+|BridgeAR          |16       |[16,16]    |
+|ChALkeR           |23       |[10,23]    |
+|Trott             |23       |[23,23]    |
+|ZYSzys            |16       |[16,16]    |
+|addaleax          |22       |[22,22]    |
+|antsmartian       |22       |[22,22]    |
+|bcoe              |11       |[11,11]    |
+|bnoordhuis        |22       |[22,22]    |
+|cjihrig           |23       |[7,23]     |
+|devnexen          |16       |[31,16]    |
+|devnexen          |16       |[31,16]    |
+|devsnek           |22       |[15,22]    |
+|devsnek           |22       |[15,22]    |
+|dnlup             |16       |[16,16]    |
+|eugeneo           |23       |[7,23]     |
+|gabrielschulhof   |16       |[31,16]    |
+|gabrielschulhof   |16       |[31,16]    |
+|gireeshpunathil   |23       |[27,23]    |
+|guybedford        |22       |[15,22]    |
+|jasnell           |23       |[10,23]    |
+|jkrems            |22       |[15,22]    |
+|johnmuhl          |3        |[28,3]     |
+|johnmuhl          |3        |[28,3]     |
+|joyeecheung       |3        |[28,3]     |
+|juanarbol         |3        |[28,3]     |
+|legendecas        |23       |[7,23]     |
+|ljharb            |22       |[15,22]    |
+|lpinca            |16       |[16,16]    |
+|lundibundi        |16       |[31,16]    |
+|marswong          |23       |[23,23]    |
+|mcollina          |23       |[7,23]     |
+|mscdex            |3        |[28,3]     |
+|mscdex            |3        |[28,3]     |
+|nodejs-github-bot |16       |[31,16]    |
+|nschonni          |23       |[23,23]    |
+|richardlau        |16       |[31,16]    |
+|ronag             |3        |[3,3]      |
+|santoshyadav198613|23       |[27,23]    |
+|targos            |22       |[22,22]    |
+|trivikr           |23       |[27,23]    |
+|wa-Nadoo          |3        |[3,3]      |
+|yinzara           |23       |[7,23]     |
