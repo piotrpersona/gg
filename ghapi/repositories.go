@@ -2,6 +2,7 @@ package ghapi
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/piotrpersona/gg/model"
 
@@ -9,17 +10,25 @@ import (
 	"github.com/piotrpersona/gg/neo"
 )
 
-// FetchRepositories will fetch GitHub API Repositories and map them onto
-// []model.Repository.
-func FetchRepositories(githubClient *github.Client, since int64) (repositories []neo.Resource, err error) {
+func FetchQueriedRepositories(githubClient *github.Client) (repositories []neo.Resource, err error) {
 	ctx := context.Background()
-	options := &github.RepositoryListAllOptions{Since: 1}
-	githubRepositories, _, err := githubClient.Repositories.ListAll(ctx, options)
+	options := github.SearchOptions{}
+
+	stars := 500
+	// followers := 500
+	// topics := 3
+
+	query := fmt.Sprintf("stars:>=%d", stars)
+
+	githubRepositories, _, err := githubClient.Search.Repositories(ctx, query, &options)
 	if err != nil {
 		return
 	}
-	for _, githubRepository := range githubRepositories {
-		repository := model.CreateRepository(githubRepository)
+	for _, githubRepository := range githubRepositories.Repositories {
+		if githubRepository.GetArchived() || githubRepository.GetPrivate() {
+			continue
+		}
+		repository := model.CreateRepository(&githubRepository)
 		repositories = append(repositories, repository)
 	}
 	return repositories, nil

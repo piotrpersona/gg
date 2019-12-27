@@ -1,6 +1,7 @@
 package app
 
 import (
+	"github.com/piotrpersona/gg/ghapi"
 	"github.com/piotrpersona/gg/neo"
 	log "github.com/sirupsen/logrus"
 )
@@ -9,8 +10,8 @@ import (
 // Neo4j related properties.
 type ApplicationConfig struct {
 	URI, Username, Password, Token string
-	Since                          int64
 	LogLevel                       log.Level
+	PullRequestWeights             ghapi.PullRequestServicesWeights
 }
 
 func (appConfig ApplicationConfig) neoconfig() neo.Config {
