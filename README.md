@@ -72,48 +72,48 @@ ORDER BY name ASC
 
 Example result of louvain algorithm
 
-|name              |community|communities|
-|------------------|---------|-----------|
-|BethGriggs        |16       |null       |
-|BridgeAR          |16       |null       |
-|ChALkeR           |23       |null       |
-|Trott             |23       |null       |
-|ZYSzys            |16       |null       |
-|addaleax          |22       |null       |
-|antsmartian       |22       |null       |
-|bcoe              |11       |null       |
-|bnoordhuis        |22       |null       |
-|cjihrig           |7        |null       |
-|devnexen          |16       |null       |
-|devnexen          |16       |null       |
-|devsnek           |22       |null       |
-|devsnek           |22       |null       |
-|dnlup             |16       |null       |
-|eugeneo           |7        |null       |
-|gabrielschulhof   |16       |null       |
-|gabrielschulhof   |16       |null       |
-|gireeshpunathil   |23       |null       |
-|guybedford        |22       |null       |
-|jasnell           |23       |null       |
-|jkrems            |22       |null       |
-|johnmuhl          |7        |null       |
-|johnmuhl          |7        |null       |
-|joyeecheung       |7        |null       |
-|juanarbol         |7        |null       |
-|legendecas        |7        |null       |
-|ljharb            |22       |null       |
-|lpinca            |16       |null       |
-|lundibundi        |16       |null       |
-|marswong          |23       |null       |
-|mcollina          |7        |null       |
-|mscdex            |7        |null       |
-|mscdex            |7        |null       |
-|nodejs-github-bot |16       |null       |
-|nschonni          |23       |null       |
-|richardlau        |16       |null       |
-|ronag             |7        |null       |
-|santoshyadav198613|23       |null       |
-|targos            |22       |null       |
-|trivikr           |23       |null       |
-|wa-Nadoo          |7        |null       |
-|yinzara           |7        |null       |
+|name              |community|
+|------------------|---------|
+|BethGriggs        |16       |
+|BridgeAR          |16       |
+|ChALkeR           |23       |
+|Trott             |23       |
+|ZYSzys            |16       |
+|addaleax          |22       |
+|antsmartian       |22       |
+|bcoe              |11       |
+|bnoordhuis        |22       |
+|cjihrig           |7        |
+|devnexen          |16       |
+|devnexen          |16       |
+|devsnek           |22       |
+|devsnek           |22       |
+|dnlup             |16       |
+|eugeneo           |7        |
+|gabrielschulhof   |16       |
+|gabrielschulhof   |16       |
+|gireeshpunathil   |23       |
+|guybedford        |22       |
+|jasnell           |23       |
+|jkrems            |22       |
+|johnmuhl          |7        |
+|johnmuhl          |7        |
+|joyeecheung       |7        |
+|juanarbol         |7        |
+|legendecas        |7        |
+|ljharb            |22       |
+|lpinca            |16       |
+|lundibundi        |16       |
+|marswong          |23       |
+|mcollina          |7        |
+|mscdex            |7        |
+|mscdex            |7        |
+|nodejs-github-bot |16       |
+|nschonni          |23       |
+|richardlau        |16       |
+|ronag             |7        |
+|santoshyadav198613|23       |
+|targos            |22       |
+|trivikr           |23       |
+|wa-Nadoo          |7        |
+|yinzara           |7        |
