@@ -15,6 +15,8 @@ This project was realised during Individual Project University course.
 
 Start `neo4j`
 
+> NOTE: `/plugins` and `/conf` should be mounted in order to detect clusters
+
 ```console
 docker run \
     --name testneo4j \
@@ -22,6 +24,8 @@ docker run \
     -d \
     --env NEO4J_AUTH=neo4j/test \
     --memory 4gi \
+    -v ./conf:/conf \
+    -v ./plugins:/plugins \
     neo4j:latest
 ```
 
@@ -51,3 +55,64 @@ or ask for help
 ```console
 docker run piotrpersona/gg --help
 ```
+
+## Detect communities
+
+Enter http://localhost:7474 and pass credentials defined with `NEO_AUTH`.
+
+Call Louvain algorithm:
+
+```sql
+CALL algo.beta.louvain.stream('User', null, { graph: 'huge', direction: 'BOTH' })
+YIELD nodeId, community, communities
+RETURN algo.asNode(nodeId).Name as name, community, communities
+ORDER BY name ASC
+```
+
+Example result of louvain algorithm
+
+|name              |community|communities|
+|------------------|---------|-----------|
+|BethGriggs        |16       |null       |
+|BridgeAR          |16       |null       |
+|ChALkeR           |23       |null       |
+|Trott             |23       |null       |
+|ZYSzys            |16       |null       |
+|addaleax          |22       |null       |
+|antsmartian       |22       |null       |
+|bcoe              |11       |null       |
+|bnoordhuis        |22       |null       |
+|cjihrig           |7        |null       |
+|devnexen          |16       |null       |
+|devnexen          |16       |null       |
+|devsnek           |22       |null       |
+|devsnek           |22       |null       |
+|dnlup             |16       |null       |
+|eugeneo           |7        |null       |
+|gabrielschulhof   |16       |null       |
+|gabrielschulhof   |16       |null       |
+|gireeshpunathil   |23       |null       |
+|guybedford        |22       |null       |
+|jasnell           |23       |null       |
+|jkrems            |22       |null       |
+|johnmuhl          |7        |null       |
+|johnmuhl          |7        |null       |
+|joyeecheung       |7        |null       |
+|juanarbol         |7        |null       |
+|legendecas        |7        |null       |
+|ljharb            |22       |null       |
+|lpinca            |16       |null       |
+|lundibundi        |16       |null       |
+|marswong          |23       |null       |
+|mcollina          |7        |null       |
+|mscdex            |7        |null       |
+|mscdex            |7        |null       |
+|nodejs-github-bot |16       |null       |
+|nschonni          |23       |null       |
+|richardlau        |16       |null       |
+|ronag             |7        |null       |
+|santoshyadav198613|23       |null       |
+|targos            |22       |null       |
+|trivikr           |23       |null       |
+|wa-Nadoo          |7        |null       |
+|yinzara           |7        |null       |
