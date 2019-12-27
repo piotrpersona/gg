@@ -7,6 +7,8 @@ import (
 	"github.com/piotrpersona/gg/neo"
 )
 
+// Reviewer represents Review author relation with
+// PullRequest/Issue author.
 type Reviewer struct {
 	RequesterID      int64
 	PullRequestID    int64
@@ -15,6 +17,7 @@ type Reviewer struct {
 	Weight           int64
 }
 
+// CreateReviewer will return Reviewer model object
 func CreateReviewer(prr *github.PullRequestReview, pullRequestID, requesterID, weight int64) Reviewer {
 	return Reviewer{
 		RequesterID:      requesterID,
@@ -25,10 +28,12 @@ func CreateReviewer(prr *github.PullRequestReview, pullRequestID, requesterID, w
 	}
 }
 
+// ID returns Reviewer ReviewerID
 func (r Reviewer) ID() int64 {
 	return r.ReviewerID
 }
 
+// Neo returns Reviewer neo.Query relation with RequesterID
 func (r Reviewer) Neo() neo.Query {
 	queryString := fmt.Sprintf(
 		`MATCH (requester:User {ID: %d})

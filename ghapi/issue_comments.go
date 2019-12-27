@@ -8,11 +8,14 @@ import (
 	"github.com/piotrpersona/gg/neo"
 )
 
+// IssueCommentsService is responsible for mapping github.IssueComment to
+// mode.IssueComment
 type IssueCommentsService struct {
 	githubClient *github.Client
 	weight       int64
 }
 
+// Fetch will download PullRequest IssueComment
 func (ics IssueCommentsService) Fetch(repo model.Repository, pullRequestID, requesterID int64) (issueComments []neo.Resource, err error) {
 	ctx := context.Background()
 	options := github.IssueListCommentsOptions{}

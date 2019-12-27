@@ -7,6 +7,10 @@ import (
 	"github.com/piotrpersona/gg/neo"
 )
 
+// PullRequestComment represents PullRequest comment author relation with
+// PullRequest author - pull request comment is a different entity than issue
+// comment. Issue comment is for both PRs and Issues, PR Comment is for
+// PR code snippet comments.
 type PullRequestComment struct {
 	RequesterID       int64
 	PullRequestID     int64
@@ -15,6 +19,7 @@ type PullRequestComment struct {
 	Weight            int64
 }
 
+// CreatePullRequestComment will return PullRequestComment model object
 func CreatePullRequestComment(prc *github.PullRequestComment, pullRequestID, requesterID, weight int64) PullRequestComment {
 	return PullRequestComment{
 		RequesterID:       requesterID,
@@ -25,10 +30,12 @@ func CreatePullRequestComment(prc *github.PullRequestComment, pullRequestID, req
 	}
 }
 
+// ID returns IssueComment CommenterID
 func (prc PullRequestComment) ID() int64 {
 	return prc.CommenterID
 }
 
+// Neo returns PullRequestComment neo.Query relation with RequesterID
 func (prc PullRequestComment) Neo() neo.Query {
 	queryString := fmt.Sprintf(
 		`MATCH (requester:User {ID: %d})

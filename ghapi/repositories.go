@@ -10,6 +10,7 @@ import (
 	"github.com/piotrpersona/gg/neo"
 )
 
+// FetchQueriedRepositories will download repositories by the gived query.
 func FetchQueriedRepositories(githubClient *github.Client) (repositories []neo.Resource, err error) {
 	ctx := context.Background()
 	options := github.SearchOptions{}

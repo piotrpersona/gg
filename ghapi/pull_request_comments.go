@@ -8,11 +8,14 @@ import (
 	"github.com/piotrpersona/gg/neo"
 )
 
+// PRCommentsService is responsible for mapping github.PullRequestComment to
+// model.PullRequestComment
 type PRCommentsService struct {
 	githubClient *github.Client
 	weight       int64
 }
 
+// Fetch will download PullRequest Comment
 func (prcs PRCommentsService) Fetch(repo model.Repository, pullRequestID, requesterID int64) (prComments []neo.Resource, err error) {
 	ctx := context.Background()
 	options := github.PullRequestListCommentsOptions{}

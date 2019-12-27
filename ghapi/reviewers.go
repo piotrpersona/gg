@@ -8,11 +8,14 @@ import (
 	"github.com/piotrpersona/gg/neo"
 )
 
+// ReviewersService is responsible for mapping github.Reviewer.User to
+// model.Reviewer
 type ReviewersService struct {
 	githubClient *github.Client
 	weight       int64
 }
 
+// Fetch will download Review Authors
 func (rs ReviewersService) Fetch(repo model.Repository, pullRequestID, requesterID int64) (reviewers []neo.Resource, err error) {
 	ctx := context.Background()
 	options := github.ListOptions{}

@@ -25,6 +25,7 @@ func CreateRepository(ghRepository *github.Repository) Repository {
 	}
 }
 
+// ID will return Repository.RepoID
 func (r Repository) ID() int64 {
 	return r.RepoID
 }

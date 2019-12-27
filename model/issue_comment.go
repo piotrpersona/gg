@@ -7,6 +7,8 @@ import (
 	"github.com/piotrpersona/gg/neo"
 )
 
+// IssueComment represents PullRequest/Issue comment author relation with
+// PullRequest/Issue author.
 type IssueComment struct {
 	RequesterID    int64
 	PullRequestID  int64
@@ -15,6 +17,7 @@ type IssueComment struct {
 	Weight         int64
 }
 
+// CreateIssueComment will return IssueComment model object
 func CreateIssueComment(prr *github.IssueComment, pullRequestID, requesterID, weight int64) IssueComment {
 	return IssueComment{
 		RequesterID:    requesterID,
@@ -25,10 +28,12 @@ func CreateIssueComment(prr *github.IssueComment, pullRequestID, requesterID, we
 	}
 }
 
+// ID returns IssueComment IssuerID
 func (ic IssueComment) ID() int64 {
 	return ic.IssuerID
 }
 
+// Neo returns IssueComment neo.Query relation with RequesterID
 func (ic IssueComment) Neo() neo.Query {
 	queryString := fmt.Sprintf(
 		`MATCH (requester:User {ID: %d})
