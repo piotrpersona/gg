@@ -9,21 +9,19 @@ import (
 
 // Repository represents repository as a graph node.
 type Repository struct {
-	RepoID   int64
-	Name     string
-	OwnerID  int64
-	Owner    string
-	Archived bool
+	RepoID  int64
+	Name    string
+	OwnerID int64
+	Owner   string
 }
 
 // CreateRepository will create model Repository object from GitHub API Repository.
 func CreateRepository(ghRepository *github.Repository) Repository {
 	return Repository{
-		RepoID:   ghRepository.GetID(),
-		Name:     ghRepository.GetName(),
-		OwnerID:  ghRepository.GetOwner().GetID(),
-		Owner:    ghRepository.GetOwner().GetLogin(),
-		Archived: ghRepository.GetArchived(),
+		RepoID:  ghRepository.GetID(),
+		Name:    ghRepository.GetName(),
+		OwnerID: ghRepository.GetOwner().GetID(),
+		Owner:   ghRepository.GetOwner().GetLogin(),
 	}
 }
 
@@ -40,13 +38,12 @@ func (r Repository) Neo() neo.Query {
 		`MERGE (repo:Repository {
 				ID: %d,
 				Name: "%s",
-				Archived: %t
 			})
 		MERGE (user:User {
 			ID: %d,
 			Name: "%s"
 		})
 		MERGE (user)-[r:OWNER]-(repo)
-		`, r.RepoID, r.Name, r.Archived, r.OwnerID, r.Owner)
+		`, r.RepoID, r.Name, r.OwnerID, r.Owner)
 	return neo.Query(queryString)
 }
