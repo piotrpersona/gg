@@ -12,6 +12,7 @@ type ApplicationConfig struct {
 	URI, Username, Password, Token string
 	LogLevel                       log.Level
 	PullRequestWeights             ghapi.PullRequestServicesWeights
+	Query                          string
 }
 
 func (appConfig ApplicationConfig) neoconfig() neo.Config {

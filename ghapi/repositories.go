@@ -2,7 +2,6 @@ package ghapi
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/piotrpersona/gg/model"
 
@@ -10,8 +9,15 @@ import (
 	"github.com/piotrpersona/gg/neo"
 )
 
+const (
+	DEFAULT_QUERY = "stars:>=1000"
+)
+
 // FetchQueriedRepositories will download repositories by the gived query.
-func FetchQueriedRepositories(githubClient *github.Client, page, perPage int) (repositories []neo.Resource, err error) {
+func FetchQueriedRepositories(
+	githubClient *github.Client,
+	page, perPage int,
+	query string) (repositories []neo.Resource, err error) {
 	ctx := context.Background()
 	options := github.SearchOptions{
 		ListOptions: github.ListOptions{
@@ -19,12 +25,6 @@ func FetchQueriedRepositories(githubClient *github.Client, page, perPage int) (r
 			PerPage: perPage,
 		},
 	}
-
-	stars := 1000
-	// followers := 500
-	// topics := 3
-
-	query := fmt.Sprintf("stars:>=%d", stars)
 
 	githubRepositories, _, err := githubClient.Search.Repositories(ctx, query, &options)
 	if err != nil {

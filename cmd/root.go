@@ -13,7 +13,7 @@ import (
 
 func buildRootCmd() (rootCmd *cobra.Command) {
 	var (
-		uri, username, password, token, loglevel                      string
+		uri, username, password, token, loglevel, githubReposQuery    string
 		reviewersWeight, issueCommentWeight, pullRequestCommentWeight int64
 	)
 
@@ -38,6 +38,7 @@ func buildRootCmd() (rootCmd *cobra.Command) {
 					IssueCommentsWeight: issueCommentWeight,
 					PRCommentsWeight:    pullRequestCommentWeight,
 				},
+				Query: githubReposQuery,
 			}
 			app.Run(applicationConfig)
 		},
@@ -49,9 +50,10 @@ func buildRootCmd() (rootCmd *cobra.Command) {
 	flags.StringVarP(&password, "password", "p", viper.GetString("NEO_PASS"), "Neo4j connection password")
 	flags.StringVarP(&token, "token", "t", viper.GetString("GITHUB_TOKEN"), "GitHub API Token String")
 	flags.StringVarP(&loglevel, "loglevel", "", log.InfoLevel.String(), "Log level")
-	flags.Int64VarP(&reviewersWeight, "review", "r", 20, "Weight of review")
+	flags.Int64Var(&reviewersWeight, "review", 20, "Weight of review")
 	flags.Int64Var(&issueCommentWeight, "issue-comment", 10, "Weight of issue comment")
 	flags.Int64Var(&pullRequestCommentWeight, "pr-comment", 16, "Weight of pull request comment")
+	flags.StringVarP(&githubReposQuery, "query", "q", ghapi.DEFAULT_QUERY, "Github repositories search query")
 
 	return
 }

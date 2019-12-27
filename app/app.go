@@ -29,7 +29,7 @@ func Run(appConfig ApplicationConfig) {
 	}
 
 	perPage := 30
-	repositories, err := ghapi.FetchQueriedRepositories(githubClient, page, perPage)
+	repositories, err := ghapi.FetchQueriedRepositories(githubClient, page, perPage, appConfig.Query)
 	if err != nil {
 		log.Error("Unable to fetch Github repositories")
 		log.Fatal(err)
