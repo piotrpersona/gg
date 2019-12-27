@@ -16,7 +16,9 @@ func Run(appConfig ApplicationConfig) {
 	configureLogging(appConfig.LogLevel)
 	neoconfig := appConfig.neoconfig()
 	githubClient := ghapi.AuthenticatedClient(appConfig.Token)
+	log.Info("Application config loaded")
 
+	log.Info("Fetching Github repositories")
 	repositories, err := ghapi.FetchQueriedRepositories(githubClient)
 	if err != nil {
 		log.Fatal("Unable to fetch Github repositories")
@@ -24,12 +26,14 @@ func Run(appConfig ApplicationConfig) {
 		os.Exit(1)
 	}
 
+	numberOfRepositories := len(repositories)
+	log.Infof("Downloaded %d repositories", numberOfRepositories)
+
 	prRequesterService := ghapi.RequestersService{GithubClient: githubClient}
 	prServices := ghapi.PullRequestServices(githubClient, appConfig.PullRequestWeights)
 
 	var repoWg sync.WaitGroup
-	numberOfRepoTasks := len(repositories)
-	repoWg.Add(numberOfRepoTasks)
+	repoWg.Add(numberOfRepositories)
 	for _, repository := range repositories {
 		go func() {
 			defer repoWg.Done()
@@ -54,4 +58,6 @@ func Run(appConfig ApplicationConfig) {
 		}()
 	}
 	repoWg.Wait()
+
+	log.Info("gg done!")
 }
