@@ -7,7 +7,11 @@
 Github users graph visualisation.
 This project was realised during Individual Project University course.
 
-![Contributors visualisation](svg/preview.svg?sanitize=true)
+![Users community](svg/preview.svg?sanitize=true)
+
+## Design
+
+![HLD](svg/gg-arch.svg?sanitize=true)
 
 ## Run
 
