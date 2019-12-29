@@ -70,5 +70,11 @@ func Run(appConfig ApplicationConfig) {
 	}
 	repoWg.Wait()
 
+	err = neo.IncrementPageNumber(neoconfig)
+	if err != nil {
+		log.Error("Cannot increment page number")
+		log.Error(err)
+		os.Exit(1)
+	}
 	log.Info("gg done!")
 }
