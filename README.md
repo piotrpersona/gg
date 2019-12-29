@@ -4,8 +4,12 @@
 [![Documentation](https://godoc.org/github.com/piotrpersona/gg?status.svg)](http://godoc.org/github.com/piotrpersona/gg)
 [![Open Source Love](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/)
 
-Github users community detection visualisation.
-This project was realised during *Individual Project University course*.
+Github users community detection visualisation. gg will extract user related
+resources from Github and construct a graph presenting relationships among the
+users.
+
+For example if user `A` reviewed a pull request of user `B` then gg will connect
+users `A` and `B` with relation `REVIEWED`.
 
 ![Users community](svg/preview.svg?sanitize=true)
 
@@ -13,9 +17,11 @@ This project was realised during *Individual Project University course*.
 
 ![HLD](svg/gg-arch.svg?sanitize=true)
 
-## Run
+## Requirements
 
-> Requiers `docker`
+* docker 19.03.X
+
+## Run
 
 Start `neo4j`
 
