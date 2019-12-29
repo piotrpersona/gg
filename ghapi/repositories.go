@@ -10,6 +10,8 @@ import (
 )
 
 const (
+	// DEFAULT_QUERY is a default github search query that will be used to
+	// fetch github repositories
 	DEFAULT_QUERY = "stars:>=1000"
 )
 

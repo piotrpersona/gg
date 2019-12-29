@@ -8,6 +8,7 @@ import (
 )
 
 const (
+	// ISSUE_COMMENT_WEIGHT is a default weight of Issue Comment relation.
 	ISSUE_COMMENT_WEIGHT = 10
 )
 

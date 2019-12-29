@@ -2,6 +2,8 @@ package neo
 
 import "github.com/neo4j/neo4j-go-driver/neo4j"
 
+// CreateSession will create neo4j.Session and neo4j.Driver from provided neo4j
+// config.
 func CreateSession(config Config) (session neo4j.Session, driver neo4j.Driver, err error) {
 	uri := config.URI
 	username := config.Username

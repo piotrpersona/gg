@@ -8,6 +8,7 @@ import (
 )
 
 const (
+	// REVIEW_WEIGHT is a default weight of Reviewer relation.
 	REVIEW_WEIGHT = 10
 )
 

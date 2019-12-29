@@ -8,6 +8,7 @@ import (
 )
 
 const (
+	// PULL_REQUEST_COMMENT_WEIGHT is a default weight of Pull Request Comment.
 	PULL_REQUEST_COMMENT_WEIGHT = 16
 )
 
