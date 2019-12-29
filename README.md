@@ -11,6 +11,11 @@ users.
 For example if user `A` reviewed a pull request of user `B` then gg will connect
 users `A` and `B` with relation `REVIEWED`.
 
+Neo4j graph database was used to present Github users and detect hidden
+communities using neo4j native community detection algorithms.
+
+Find out more implementation details chekout `docs/`.
+
 ![Users community](svg/preview.svg?sanitize=true)
 
 ## Design
