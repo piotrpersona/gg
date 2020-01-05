@@ -20,6 +20,8 @@ User `resources` that are meaningful for community relation (starting from the m
 * Issue comment
 * Review request
 * Issue assignees
+* Followers
+* Following
 * Watch
 * Stars
 * Reactions
