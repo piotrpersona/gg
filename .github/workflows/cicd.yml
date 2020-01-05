@@ -1,38 +1,53 @@
+---
 name: CI
 
-on: [push]
+on:
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - 'README.md'
+      - 'LICENSE'
+      - 'conf/**'
+      - 'plugins/**'
+      - 'images/**'
+      - 'svg/**'
+      - '*.sh'
 
 jobs:
   build:
     name: Build & Upload to dockerhub
     strategy:
       matrix:
-        go-version: [1.12.x, 1.13.x]
-        os: [ubuntu-latest]
+        go-version:
+          - 1.12.x
+          - 1.13.x
+        os:
+          - ubuntu-latest
     runs-on: ${{ matrix.os }}
     steps:
-    - name: Use go ${{ matrix.go-version }}
-      uses: actions/setup-go@v1
-      with:
-        go-version: ${{ matrix.go-version }}
-    - name: Checkout source
-      uses: actions/checkout@v1
-    # - name: Run tests
-    #   run: go test ./...
-    - name: Build image
-      run: |
-        docker build . \
-          --file Dockerfile \
-          --build-arg VCS_REF=${GITHUB_SHA} \
-          --tag piotrpersona/gg:${GITHUB_SHA}
-    - name: Login to dockerhub.io
-      uses: azure/docker-login@v1
-      with:
-        loginServer: 'index.docker.io'
-        username: ${{ secrets.dockerHubUsername }}
-        password: ${{ secrets.dockerHubToken }}
-    - name: Push image
-      run: |
-        docker tag piotrpersona/gg:${GITHUB_SHA} piotrpersona/gg:latest
-        docker push piotrpersona/gg:${GITHUB_SHA}
-        docker push piotrpersona/gg:latest
+      - name: Use go ${{ matrix.go-version }}
+        uses: actions/setup-go@v1
+        with:
+          go-version: ${{ matrix.go-version }}
+      - name: Checkout source
+        uses: actions/checkout@v1
+      # - name: Run tests
+      #   run: go test ./...
+      - name: Build image
+        run: |
+          docker build . \
+            --file Dockerfile \
+            --build-arg VCS_REF=${GITHUB_SHA} \
+            --tag piotrpersona/gg:${GITHUB_SHA}
+      - name: Login to dockerhub.io
+        uses: azure/docker-login@v1
+        with:
+          loginServer: 'index.docker.io'
+          username: ${{ secrets.dockerHubUsername }}
+          password: ${{ secrets.dockerHubToken }}
+      - name: Push image
+        run: |
+          docker tag piotrpersona/gg:${GITHUB_SHA} piotrpersona/gg:latest
+          docker push piotrpersona/gg:${GITHUB_SHA}
+          docker push piotrpersona/gg:latest
